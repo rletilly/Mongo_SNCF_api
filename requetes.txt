@@ -1,0 +1,105 @@
+
+db.employee.find(   
+    {$and: [
+        {salary:  {$gt : 2600}},
+        {salary:  {$lt : 2610}} 
+    ]} 
+).pretty()
+
+db.employee.find(
+    {first_name: { $regex: 'd$', $options: 'm' } }
+    )
+
+db.employee.find(     
+    { adress : /.*Hill.*/},     
+    {last_name : 1,adress : 1, state: 1,_id : 0} 
+).pretty()
+
+
+db.employee.find(
+    {last_name: { $regex: '^bo', $options: 'i' }},
+    {last_name : 1, salary: 1,_id : 0} 
+)
+db.employee.updateMany(
+    {last_name: { $regex: '^bo', $options: 'i' }},
+    {$inc :{salary:100}}
+)
+
+db.employee.updateMany(
+    {},
+    {$inc :{salary: -10}}
+)
+
+db.employee.updateMany(     
+    {  $and: [
+        {bonus: {$eq : 0} },
+        {state: {$not : { $eq : "Texas" }}},
+        {state: {$not : { $eq : "Indiana" }}}   
+    ]},
+    {$set :
+        {bonus : 100}
+    }
+)
+
+db.employee.updateMany(     
+    {  $and: [
+        {bonus: {$eq : 0} },
+        {state: {$not : { $eq : "Texas" }}},
+        {state: {$not : { $eq : "Indiana" }}}   
+    ]},
+    {$set :
+        {bonus : 100}
+    }
+)
+
+db.employee.find(    
+    {  $and: [
+        {first_name: { $eq : "Estevan" }},
+        {last_name: { $eq : "Leggan" }}   
+    ]}
+)
+
+db.employee.update(     
+    {  $and: [
+        {first_name: { $eq : "Estevan" }},
+        {last_name: { $eq : "Leggan" }}   
+    ]},
+    {$set :
+        {adress : "24 rue de taponiere"}
+    }
+)
+
+db.employee.createIndex( 
+    { "last_name": 1, "first_name": 1 } 
+) 
+
+db.employee.find(    
+    {  $and: [
+        {first_name: { $eq : "Estevan" }},
+        {last_name: { $eq : "Leggan" }}   
+    ]},
+    {
+        first_name : 1 , 
+        last_name : 1, 
+        last_name_1_first_name_1_ : 1
+    }
+)
+
+db.employee.createIndex(
+     { "email": 1 }, { unique: true }
+ )
+
+ db.employee.aggregate( 
+     [{ $group: { 
+            _id:"$state" } }
+    ] )
+
+ db.employee.aggregate( 
+     [{ $match: 
+        { 
+            state : { $eq : "Texas" }
+        } 
+    }] 
+)
+db.employee.getIndexes()
+
